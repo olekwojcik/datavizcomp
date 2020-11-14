@@ -1,0 +1,14 @@
+---
+title: "isabelle_is_the_best"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{R}
+
+library(ggplot2)
+library(tidyverse)
+```
