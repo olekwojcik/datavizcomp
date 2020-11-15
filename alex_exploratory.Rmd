@@ -1,0 +1,52 @@
+---
+title: "alex_exploratory"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+libs 
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r}
+glimpse(tuition_cost)
+```
+
+
+```{r}
+ggplot(data = salary_potential, aes(x = make_world_better_percent))+
+  geom_histogram()
+
+```
+
+
+```{r}
+glimpse(diversity_school)
+
+unique(diversity_school$category)
+
+diversity_school$name=="Reed College"
+```
+
+parallel chart
+
+```{r}
+library(GGally)
+
+
+# Plot
+ggparcoord(salary_potential,
+    columns = c(4,5),
+    scale = "globalminmax"
+    ) 
+
+#color by slope 
+```
+
