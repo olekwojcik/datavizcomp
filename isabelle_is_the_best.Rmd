@@ -115,19 +115,20 @@ oleks_data %>%
            #CCBASIC_words == "Baccalaureate/Associate's Colleges: Mixed Baccalaureate/Associate's" |
            CCBASIC_words == "Doctoral Universities: Very High Research Activity" |
            CCBASIC_words == "Doctoral Universities: High Research Activity"
-           ) %>%
+           ) 
 
-ggparcoord(
-    columns = c(5,6),
+
+ggparcoord(oleks_data, 
+    columns = c(4,5),
     scale = "globalminmax", 
-    groupColumn = 8, 
+    groupColumn = 14, 
     alphaLines = 0.7
     ) + 
   scale_color_viridis_c() + 
   theme_minimal() + 
   labs(y = "Dollars", 
        x = "", 
-       color = "Stem Percent",
+       color = "Salary Growth",
        title = "The Rich Get Richer") + 
     theme(plot.title = element_text(hjust = 0.5, size = 20, family="Comic Sans MS"), axis.title.y = element_text(family="Comic Sans MS"), legend.title = element_text(family="Comic Sans MS")) 
 
