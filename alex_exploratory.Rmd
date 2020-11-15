@@ -13,6 +13,7 @@ libs
 ```{r}
 library(ggplot2)
 library(tidyverse)
+library(plotly)
 ```
 
 ```{r}
@@ -45,7 +46,7 @@ library(GGally)
 ggparcoord(salary_potential,
     columns = c(4,5),
     scale = "globalminmax"
-    ) 
+    ) %>% ggplotly()
 
 #color by slope 
 ```
