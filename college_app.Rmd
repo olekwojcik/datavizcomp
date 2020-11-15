@@ -16,10 +16,8 @@ library(tidyverse)
 library(here)
 library(flexdashboard)
 library(plotly)
-<<<<<<< HEAD
 library(fonts)
-=======
->>>>>>> a43e9714a945dac37573d0a577f8eae13690ef15
+
 ```
 
 
