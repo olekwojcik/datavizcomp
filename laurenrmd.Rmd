@@ -35,8 +35,51 @@ tuition_income <-
 ```
 
 ```{r}
-ggplot(salary_potential, aes(x = stem_percent, y = make_world_better_percent,
-                              color = early_career_pay)) +
-  geom_point()
+school_cats <- read.csv("oleks_data.csv")
+```
+
+```{r}
+school_cats %>%
+  filter(CONTROL == 1 | CONTROL == 2) %>%
+  ggplot(aes(x = stem_percent, y = make_world_better_percent)) +
+  geom_point(aes(color = early_career_pay, shape = factor(CONTROL)), alpha = 0.5)
+```
+
+```{r}
+school_cats %>%
+  count(CONTROL)
+```
+
+```{r}
+school_cats %>%
+  filter(CONTROL == 1 | CONTROL == 2) %>%
+  ggplot(aes(x=factor(CONTROL), y= make_world_better_percent)) +
+  geom_boxplot()
+```
+
+```{r}
+school_cats %>%
+  filter(CONTROL == 1 | CONTROL == 2) %>%
+  ggplot(aes(x=stem_percent, y=mid_career_pay)) +
+  geom_point(aes(color = factor(CONTROL)))
+```
+
+```{r}
+library(GGally)
+
+# Plot
+ggparcoord(salary_potential,
+    columns = c(4,5),
+    scale = "globalminmax",
+    alphaLines = 0.3
+    ) 
+
+#color by slope 
+```
+
+```{r}
+school_cats %>%
+  ggplot(aes(x= state_name, y=stem_percent)) +
+  geom_boxplot()
 ```
 
