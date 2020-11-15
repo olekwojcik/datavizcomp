@@ -31,10 +31,18 @@ oleks_data <- oleks_data %>%
 oleks_data <- oleks_data %>%
   mutate(CONTROL_2 = case_when(
     CONTROL == 2 ~ "Private",
-    CONTROL == 1 ~ "Public"
-  ))
+    CONTROL == 1 ~ "Public")) %>%
+   rename("Early Career Salary" = "early_career_pay", 
+         "Mid Career Salary" = "mid_career_pay" ) %>%
+   filter(CCBASIC_words == "Baccalaureate Colleges: Arts & Sciences Focus" |
+           CCBASIC_words == "Baccalaureate Colleges: Diverse Fields" |
+           #CCBASIC_words == "Baccalaureate/Associate's Colleges: Mixed Baccalaureate/Associate's" |
+           CCBASIC_words == "Doctoral Universities: Very High Research Activity" |
+           CCBASIC_words == "Doctoral Universities: High Research Activity"
+           )
 
-
+oleks_data <- oleks_data %>%
+  select(c(-"X"))
 ```
 
 
@@ -54,10 +62,10 @@ Input {.sidebar}
 
 checkboxGroupInput("checkGroup", label = h3("Checkbox group"), 
     choices = list("Public" = "Public", "Private" = "Private"),
-    selected = "P")
+    selected = "Public")
                                 
 radioButtons("radio", label = h3("Radio buttons"),
-    choices = list("Salary Growth" = 14, "Percentage STEM majors" = 8, "Percentage who feel like they are making the world better" = 7), 
+    choices = list("Salary Growth" = 14, "Percentage STEM majors" = 7, "Percentage who feel like they are making the world better" = 6), 
     selected = 14)
                 
 
@@ -65,10 +73,7 @@ radioButtons("radio", label = h3("Radio buttons"),
 h5("Click on a county to see its estimate and bootstrap standard error.") 
 
 
-
-
-
-h6()
+renderPrint(which_column_reactive())
                                 
 ```
 
@@ -87,27 +92,18 @@ library(GGally)
 # Plot
 
 
-oleks_data_reactive <- reactive({
-  oleks_data %>%
-  filter(CONTROL == input$checkGroup) %>% 
-   mutate(diff_salary = mid_career_pay - early_career_pay) %>%
-   rename("Early Career Salary" = "early_career_pay", 
-         "Mid Career Salary" = "mid_career_pay" ) %>%
-  filter(CCBASIC_words == "Baccalaureate Colleges: Arts & Sciences Focus" |
-           CCBASIC_words == "Baccalaureate Colleges: Diverse Fields" |
-           #CCBASIC_words == "Baccalaureate/Associate's Colleges: Mixed Baccalaureate/Associate's" |
-           CCBASIC_words == "Doctoral Universities: Very High Research Activity" |
-           CCBASIC_words == "Doctoral Universities: High Research Activity"
-           )
-})
+# oleks_data_reactive <- reactive({
+#   oleks_data %>%
+#   filter(CONTROL == input$checkGroup) 
+# })
 
 which_column_reactive <- reactive({
   input$radio
 })
 
 renderPlot({
-  ggparcoord(oleks_data_reactive(),
-    columns = c(5,6),
+  ggparcoord(data_reactive(),
+    columns = c(4,5),
     scale = "globalminmax", 
     groupColumn = which_column_reactive(), 
     alphaLines = 0.7
@@ -121,5 +117,5 @@ renderPlot({
     theme(plot.title = element_text(hjust = 0.5, size = 20, family="Comic Sans MS"), axis.title.y = element_text(family="Comic Sans MS"), legend.title = element_text(family="Comic Sans MS"))
 })
 
-renderPrint(input$checkGroup)
+
 ```
