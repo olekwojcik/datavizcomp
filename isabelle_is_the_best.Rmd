@@ -11,4 +11,127 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(ggplot2)
 library(tidyverse)
+library(extrafont)
+
 ```
+
+```{r}
+
+# Load the data
+
+diversity_school <- 
+  read_csv("https://raw.githubusercontent.com/Reed-Statistics/data-viz-competition-2020/main/data/diversity_school.csv") %>%
+  dplyr::select(-X1)
+
+historical_tuition <- 
+  read_csv("https://raw.githubusercontent.com/Reed-Statistics/data-viz-competition-2020/main/data/historical_tuition.csv") %>%
+  dplyr::select(-X1)
+
+salary_potential <-
+  read_csv("https://raw.githubusercontent.com/Reed-Statistics/data-viz-competition-2020/main/data/salary_potential.csv") %>%
+  dplyr::select(-X1)
+
+tuition_cost <-
+  read_csv("https://raw.githubusercontent.com/Reed-Statistics/data-viz-competition-2020/main/data/tuition_cost.csv") %>% 
+  dplyr::select(-X1)
+
+tuition_income <-
+  read_csv("https://raw.githubusercontent.com/Reed-Statistics/data-viz-competition-2020/main/data/tuition_income.csv") %>%
+  dplyr::select(-X1)
+
+``` 
+
+
+# ```{r}
+# save(diversity_school, file = "diversity.Rdata")
+# 
+# save(historical_tuition, file = "hist_tuition.Rdata")
+# 
+# save(salary_potential, file = "salary.Rdata")
+# 
+# save(tuition_cost, file = "tuition_cost.Rdata")
+# 
+# save(tuition_income, file = "tuition_income.Rdata")
+# 
+# 
+# ```
+
+```{R}
+
+ggplot(data = oleks_data, aes(x = stem_percent, y = mid_career_pay, color = make_world_better_percent)) + 
+  geom_jitter(
+  ) + 
+  scale_color_viridis_c()
+
+
+
+
+```
+
+
+```{R}
+
+
+white_dudes <- diversity_school %>%
+  filter(category == "White") %>%
+  mutate(percent_white = enrollment/total_enrollment)
+
+```
+
+```{R}
+
+
+stuff <- left_join(white_dudes, salary_potential, by = "name") 
+  
+```
+
+```{r}
+ count(oleks_data, CCBASIC_words) %>% 
+  arrange(desc(n))
+
+
+```
+ 
+ 
+```{r}
+
+library(GGally)
+
+
+# Plot
+salary_potential <- salary_potential %>%
+  mutate(diff_salary = mid_career_pay - early_career_pay)
+
+oleks_data <- oleks_data %>%
+  mutate(diff_salary = mid_career_pay - early_career_pay)
+
+oleks_data %>%
+  filter(CONTROL == 1) %>% 
+   mutate(diff_salary = mid_career_pay - early_career_pay) %>%
+   rename("Early Career Salary" = "early_career_pay", 
+         "Mid Career Salary" = "mid_career_pay" ) %>%
+  filter(CCBASIC_words == "Baccalaureate Colleges: Arts & Sciences Focus" |
+           CCBASIC_words == "Baccalaureate Colleges: Diverse Fields" |
+           #CCBASIC_words == "Baccalaureate/Associate's Colleges: Mixed Baccalaureate/Associate's" |
+           CCBASIC_words == "Doctoral Universities: Very High Research Activity" |
+           CCBASIC_words == "Doctoral Universities: High Research Activity"
+           ) %>%
+
+ggparcoord(
+    columns = c(5,6),
+    scale = "globalminmax", 
+    groupColumn = 8, 
+    alphaLines = 0.7
+    ) + 
+  scale_color_viridis_c() + 
+  theme_minimal() + 
+  labs(y = "Dollars", 
+       x = "", 
+       color = "Stem Percent",
+       title = "The Rich Get Richer") + 
+    theme(plot.title = element_text(hjust = 0.5, size = 20, family="Comic Sans MS"), axis.title.y = element_text(family="Comic Sans MS"), legend.title = element_text(family="Comic Sans MS")) 
+
+```
+ 
+ 
+ ```
