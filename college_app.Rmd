@@ -16,7 +16,6 @@ library(tidyverse)
 library(here)
 library(flexdashboard)
 library(plotly)
-library(fonts)
 
 ```
 
