@@ -1,5 +1,5 @@
 ---
-title: "Estimation Dashboard"
+title: "Salary Potential By College"
 author: " " 
 output: 
   flexdashboard::flex_dashboard:
@@ -15,6 +15,8 @@ runtime: shiny
 library(tidyverse)
 library(here)
 library(flexdashboard)
+library(plotly)
+library(fonts)
 ```
 
 
@@ -38,8 +40,7 @@ oleks_data <- oleks_data %>%
 
 
 
-Maps
-=====================================  
+
 
 
 Input {.sidebar}
@@ -50,17 +51,17 @@ Input {.sidebar}
 # This app works by gluing inputs together to get the right varible names
 
 
-checkboxGroupInput("checkGroup", label = h3("Checkbox group"), 
+checkboxGroupInput("checkGroup", label = h4("Type of College"), 
     choices = list("Public" = "Public", "Private" = "Private"),
     selected = c("Public","Private"))
                                 
-radioButtons("radio", label = h3("Radio buttons"),
+radioButtons("radio", label = h4("Variable color represents"),
     choices = list("Salary Growth" = 15, "Percentage STEM majors" = 8, "Percentage who feel like they are making the world better" = 7), 
     selected = 15)
                 
 
 
-h5("Click on a county to see its estimate and bootstrap standard error.") 
+h5() 
 
 
 h6()
@@ -70,7 +71,8 @@ h6()
 
 Column{.tabset}
 -----------------------------------------------------------------------
-### Interactive Map of Estimates 
+###  
+
 ```{r}
   
 # data_reactive <- reactive({
@@ -103,9 +105,16 @@ which_column_reactive <- reactive({
   as.numeric(input$radio)
 })
 
+legend_reactive <- reactive({
+  if(input$radio == 15){paste("Salary Growth")}
+  else if(input$radio == 8){paste("Percentage Stem Majors")}
+  else(paste("Percentage Who Feel \n Like They Are Making \n The World Better")) 
+})
 
-renderPlot({
-  ggparcoord(oleks_data,
+
+output$plot<- renderPlotly({
+  ggparcoord(oleks_data_reactive(),
+            aes(text = name),
     columns = c(5,6),
     scale = "globalminmax",
     groupColumn = as.numeric(input$radio),
@@ -115,12 +124,16 @@ renderPlot({
   theme_minimal() +
   labs(y = "Dollars",
        x = "",
-       color = "Stem Percent",
+       color = legend_reactive(),
        title = "The Rich Get Richer") +
-  theme(plot.title = element_text(hjust = 0.5, size = 20, family="Comic Sans MS"), 
-        axis.title.y = element_text(family="Comic Sans MS"), 
-        legend.title = element_text(family="Comic Sans MS"))
-})
+  theme(plot.title = element_text(hjust = 0.5, size = 20, family="Palatino"), 
+        axis.title.y = element_text(family="Palatino", size = 16, face = "bold"), 
+        legend.title = element_text(family="Palatino", face = "bold", size = 13), 
+        axis.text.x = element_text(family="Palatino", face = "bold", size = 14)) 
+
+}) 
+ 
+plotlyOutput("plot")
 
 # renderPrint(class(as.numeric(input$radio)))
 ```
