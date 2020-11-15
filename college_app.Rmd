@@ -1,0 +1,126 @@
+---
+title: "Estimation Dashboard"
+author: " " 
+output: 
+  flexdashboard::flex_dashboard:
+    theme: readable 
+    orientation: columns
+    source_code: embed
+    vertical_layout: fill 
+runtime: shiny
+---
+
+```{r global, include=FALSE}
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+library(tidyverse)
+library(here)
+library(flexdashboard)
+```
+
+
+
+```{r}
+oleks_data <- read.csv(here("oleks_data.csv"))
+load(here("salary.Rdata"))
+
+salary_potential <- salary_potential %>%
+  mutate(diff_salary = mid_career_pay - early_career_pay)
+oleks_data <- oleks_data %>%
+  mutate(diff_salary = mid_career_pay - early_career_pay)
+
+oleks_data <- oleks_data %>%
+  mutate(CONTROL_2 = case_when(
+    CONTROL == 2 ~ "Private",
+    CONTROL == 1 ~ "Public"
+  ))
+```
+
+```{r}
+ 
+```
+
+
+
+Maps
+=====================================  
+
+
+Input {.sidebar}
+--------------------------------------------------------
+
+
+```{r}
+# This app works by gluing inputs together to get the right varible names
+
+
+checkboxGroupInput("checkGroup", label = h3("Checkbox group"), 
+    choices = list("Public" = "Public", "Private" = "Private"),
+    selected = "P")
+                                
+radioButtons("radio", label = h3("Radio buttons"),
+    choices = list("Salary Growth" = 14, "Percentage STEM majors" = 8, "Percentage who feel like they are making the world better" = 7), 
+    selected = 14)
+                
+
+
+h5("Click on a county to see its estimate and bootstrap standard error.") 
+
+
+
+
+
+h6()
+                                
+```
+
+
+Column{.tabset}
+-----------------------------------------------------------------------
+### Interactive Map of Estimates 
+```{r}
+  
+data_reactive <- reactive({
+  oleks_data %>%
+    filter(CONTROL_2 == input$checkGroup)
+})
+
+library(GGally)
+# Plot
+
+
+oleks_data_reactive <- reactive({
+  oleks_data %>%
+  filter(CONTROL == input$checkGroup) %>% 
+   mutate(diff_salary = mid_career_pay - early_career_pay) %>%
+   rename("Early Career Salary" = "early_career_pay", 
+         "Mid Career Salary" = "mid_career_pay" ) %>%
+  filter(CCBASIC_words == "Baccalaureate Colleges: Arts & Sciences Focus" |
+           CCBASIC_words == "Baccalaureate Colleges: Diverse Fields" |
+           #CCBASIC_words == "Baccalaureate/Associate's Colleges: Mixed Baccalaureate/Associate's" |
+           CCBASIC_words == "Doctoral Universities: Very High Research Activity" |
+           CCBASIC_words == "Doctoral Universities: High Research Activity"
+           )
+})
+
+which_column_reactive <- reactive({
+  input$radio
+})
+
+renderPlot({
+  ggparcoord(oleks_data_reactive(),
+    columns = c(5,6),
+    scale = "globalminmax", 
+    groupColumn = which_column_reactive(), 
+    alphaLines = 0.7
+    ) + 
+  scale_color_viridis_c() + 
+  theme_minimal() + 
+  labs(y = "Dollars", 
+       x = "", 
+       color = "Stem Percent",
+       title = "The Rich Get Richer") + 
+    theme(plot.title = element_text(hjust = 0.5, size = 20, family="Comic Sans MS"), axis.title.y = element_text(family="Comic Sans MS"), legend.title = element_text(family="Comic Sans MS"))
+})
+
+renderPrint(input$checkGroup)
+```
