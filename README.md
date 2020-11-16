@@ -1,6 +1,11 @@
-# datavizcomp
+#Reed Stats/DS Club Data Viz Contest 2020
 
-#here's the data
+#This is the Repo for team Dashing Devils (Isabelle, Olek, Alex, and Lauren)'s data visualization.
+
+#The file college_app.Rmd is the one you want. The rest are just us having fun. :)
+
+
+#Here's the data from the Club:
 
 library(tidyverse)
 diversity_school <- 
