@@ -170,6 +170,3 @@ Created By: Isabelle, Olek, Alex, and Lauren for the Reed Stats Club Data Viz Co
 Data was wrangled to include only the following Carnegie Classifications: Baccalaureate Colleges: Arts & Sciences Focus/Diverse Fields & Doctoral Universities: High Research Activity/Very High Research Activity  
 
 
-
-
-
