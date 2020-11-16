@@ -171,4 +171,6 @@ Data from Tuition Tracker and College ScoreCard
 
 To avoid 'special focus' schools that may have distorted salary paths relative to a 'standard' college/university, data were wrangled to include only the following Carnegie Classifications: Baccalaureate Colleges: Arts & Sciences Focus or Diverse Fields, & Doctoral Universities: High Research Activity or Very High Research Activity
 
+GitHub repo: https://github.com/olekwojcik/datavizcomp
+
 
