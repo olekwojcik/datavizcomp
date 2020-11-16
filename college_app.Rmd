@@ -60,7 +60,10 @@ checkboxGroupInput("checkGroup", label = h4("Type of College"),
     selected = c("Public","Private"))
                                 
 radioButtons("radio", label = h4("Variable color represents"),
-    choices = list("Salary Growth" = 15, "Percentage STEM majors" = 8, "Percentage who feel like they are making the world better" = 7), 
+    choices = list("Salary Growth" = 15, 
+                   "Percentage STEM majors" = 8, 
+                   "Percentage who feel like they
+                   are making the world better" = 7), 
     selected = 15)
                 
 
@@ -108,7 +111,7 @@ which_column_reactive <- reactive({
 legend_reactive <- reactive({
   if(input$radio == 15){paste("Salary Growth")}
   else if(input$radio == 8){paste("Percentage Stem Majors")}
-  else(paste("Percentage Who Feel \n Like They Are Making \n The World Better")) 
+  else(paste("Percentage Who Feel\nLike They Are Making\nThe World Better")) 
 })
 
 
@@ -162,7 +165,7 @@ Row{}
 -----------------------------------------------
 
 ### 
-Data From Tuition Tracker and College ScoreCard
+Data from Tuition Tracker and College ScoreCard
 
 Created By: Isabelle, Olek, Alex, and Lauren for the Reed Stats Club Data Viz Competition
 
