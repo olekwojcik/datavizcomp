@@ -165,14 +165,10 @@ Row{}
 -----------------------------------------------
 
 ### 
+Created By: Isabelle, Olek, Alex, and Lauren for the Reed Stats Club Data Viz Competition, 11/16/2020
+
 Data from Tuition Tracker and College ScoreCard
 
-Created By: Isabelle, Olek, Alex, and Lauren for the Reed Stats Club Data Viz Competition
-
-
-Data was wrangled to include only the following Carnegie Classifications: Baccalaureate Colleges: Arts & Sciences Focus/Diverse Fields & Doctoral Universities: High Research Activity/Very High Research Activity  
-
-
-
+To avoid 'special focus' schools that may have distorted salary paths relative to a 'standard' college/university, data were wrangled to include only the following Carnegie Classifications: Baccalaureate Colleges: Arts & Sciences Focus or Diverse Fields, & Doctoral Universities: High Research Activity or Very High Research Activity
 
 
